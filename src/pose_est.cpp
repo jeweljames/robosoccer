@@ -58,6 +58,22 @@ circle(src, centroid , 3 , Scalar(0,255,0),-1,8,0);
 double theta = atan((double)(-centroid.y + indi[0].y)/(centroid.x - indi[0].x)) ;
 double theta_degree = theta*180/M_PI;
 
+if (indi[0].x>centroid.x&&indi[0].y>centroid.y)
+{
+  cout<<"a";
+}
+else if (indi[0].x>centroid.x&&indi[0].y<centroid.y)
+ {
+ cout<<"b";
+ }
+else if (indi[0].x<centroid.x&&indi[0].y>centroid.y)
+ {
+   cout<<"c";
+ }
+else if (indi[0].x<centroid.x&&indi[0].y<centroid.y)
+ {
+   cout<<"d";
+ }
 
 
 line(src,indi[0],indi[1],Scalar( 0, 0, 0 ),2,8 );
