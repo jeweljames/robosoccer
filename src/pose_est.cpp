@@ -5,8 +5,8 @@
  *      Author: Jewel James
  */
 
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 #include <iostream>
 #include <stdio.h>
 
@@ -21,10 +21,26 @@ int main(int argc, char** argv)
 
   /// Read the image
 
+  VideoCapture cap(0);
+  // Check if we can use this device at all:
+  if (!cap.isOpened()) {
+    cerr << "Capture Device ID cannot be opened." << endl;
+    return -1;
+  }
+
+
+
+  for(;;)
+
+{
   src=imread("../data/circles.jpg", 1);
 
+/*  cap>>src;
 
 
+   namedWindow( "Hough Circle Transform Demo", WINDOW_AUTOSIZE );
+    imshow( "Hough Circle Transform Demo", src );
+    waitKey(0);*/
   /// Convert it to gray
   //cvtColor( src, src_gray, CV_BGR2GRAY );
   cvtColor(src, src_gray, COLOR_BGR2GRAY);
@@ -32,12 +48,17 @@ int main(int argc, char** argv)
   /// Reduce the noise so we avoid false circle detection
   GaussianBlur( src_gray, src_gray, Size(9, 9), 2, 2 );
 
+  //erode( src_gray,src_gray, Mat());
+  //dilate( src_gray,src_gray, Mat());
+  Canny(src_gray,src_gray, 1.0,255.0 );
+  //GaussianBlur( src_gray, src_gray, Size(3, 3), 5, 5 );
+
   vector<Vec3f> circles;
 
   /// Apply the Hough Transform to find the circles
   //HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 100, 0, 0 );
 
-  HoughCircles(src_gray, circles, HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 100 );
+  HoughCircles(src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 100 );
   Point indi[2];
 
 
@@ -90,11 +111,11 @@ cout << "Times passed in seconds: " << t << endl;
 cout << "orientation" << theta_degree << endl;
 
   /// Show your results
-  namedWindow( "Hough Circle Transform Demo", WINDOW_AUTOSIZE );
+  namedWindow( "Hough Circle Transform Demo", WINDOW_NORMAL );
   imshow( "Hough Circle Transform Demo", src );
 
-  waitKey(0);
+  waitKey(1000);
 
-
+}
   return 0;
 }
