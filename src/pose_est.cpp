@@ -30,10 +30,10 @@ int main(int argc, char** argv)
 
 
 
-  for(;;)
+  //for(;;)
 
 {
-  src=imread("../data/circles.jpg", 1);
+  src=imread("../data/iph.jpg", 1);
 
 /*  cap>>src;
 
@@ -47,10 +47,21 @@ int main(int argc, char** argv)
 
   /// Reduce the noise so we avoid false circle detection
   GaussianBlur( src_gray, src_gray, Size(9, 9), 2, 2 );
-
+  namedWindow( "blurred", WINDOW_NORMAL );
+  imshow( "blurred", src_gray );
+cvWaitKey(1000);
   //erode( src_gray,src_gray, Mat());
   //dilate( src_gray,src_gray, Mat());
-  Canny(src_gray,src_gray, 1.0,255.0 );
+  Canny(src_gray,src_gray, 250.0,255.0 );
+  namedWindow( "canny", WINDOW_NORMAL );
+  imshow( "canny", src_gray );
+
+
+GaussianBlur( src_gray, src_gray, Size(9, 9), 2, 2 );
+
+namedWindow( "eroded", WINDOW_NORMAL );
+  imshow( "eroded",src_gray );
+  cvWaitKey(1000);
   //GaussianBlur( src_gray, src_gray, Size(3, 3), 5, 5 );
 
   vector<Vec3f> circles;
@@ -66,7 +77,7 @@ int main(int argc, char** argv)
   for( size_t i = 0; i < circles.size(); i++ )
   {
       indi[i] = Point(cvRound(circles[i][0]), cvRound(circles[i][1]));
-      
+
       int radius = cvRound(circles[i][2]);
       // circle center
       circle( src, indi[i], 3, Scalar(0,255,0), -1, 8, 0 );
@@ -114,7 +125,7 @@ cout << "orientation" << theta_degree << endl;
   namedWindow( "Hough Circle Transform Demo", WINDOW_NORMAL );
   imshow( "Hough Circle Transform Demo", src );
 
-  waitKey(1000);
+  waitKey(0);
 
 }
   return 0;
