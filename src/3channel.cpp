@@ -16,7 +16,7 @@ using namespace std;
 /** @function main */
 int main(int argc, char** argv)
 {
-  Mat src, src_gray;
+  Mat src, src_gray,channels[3] ;
   double t = (double)getTickCount();     //start time
 
   /// Read the image
@@ -28,40 +28,54 @@ int main(int argc, char** argv)
     return -1;
   }
 
-
-
-  //for(;;)
-
-{
   src=imread("../data/circles.jpg", 1);
 
-/*  cap>>src;
+  split(src,channels);
 
+  namedWindow( "ch_b", WINDOW_NORMAL );
+  imshow( "ch_b", channels[0] );
 
-   namedWindow( "Hough Circle Transform Demo", WINDOW_AUTOSIZE );
-    imshow( "Hough Circle Transform Demo", src );
-    waitKey(0);*/
-  /// Convert it to gray
-  //cvtColor( src, src_gray, CV_BGR2GRAY );
-  cvtColor(src, src_gray, COLOR_BGR2GRAY);
+  waitKey(1000);
+
+namedWindow( "ch_g", WINDOW_NORMAL );
+  imshow( "ch_g", channels[1] );
+
+  waitKey(1000);
+namedWindow( "ch_r", WINDOW_NORMAL );
+  imshow( "ch_r", channels[2] );
+
+  waitKey(1000);
+
 
   /// Reduce the noise so we avoid false circle detection
-  GaussianBlur( src_gray, src_gray, Size(9, 9), 2, 2 );
-  namedWindow( "blurred", WINDOW_NORMAL );
-  imshow( "blurred", src_gray );
-  cvWaitKey(1000);
-  //erode( src_gray,src_gray, Mat());
-  //dilate( src_gray,src_gray, Mat());
-  Canny(src_gray,src_gray, 250.0,255.0 );
-  namedWindow( "canny", WINDOW_NORMAL );
-  imshow( "canny", src_gray );
-  GaussianBlur( src_gray, src_gray, Size(9, 9), 2, 2 );
-  namedWindow( "eroded", WINDOW_NORMAL );
-  imshow( "eroded",src_gray );
-  cvWaitKey(1000);
-  //GaussianBlur( src_gray, src_gray, Size(3, 3), 5, 5 );
+  GaussianBlur( channels[0], channels[0], Size(9, 9), 2, 2 );
+  GaussianBlur( channels[1], channels[1], Size(9, 9), 2, 2 );
+  GaussianBlur( channels[2], channels[2], Size(9, 9), 2, 2 );
+  GaussianBlur( channels[0], channels[0], Size(9, 9), 2, 2 );
+  GaussianBlur( channels[1], channels[1], Size(9, 9), 2, 2 );
+  GaussianBlur( channels[2], channels[2], Size(9, 9), 2, 2 );
 
-  vector<Vec3f> circles;
+  Canny(channels[0],channels[0], 250.0,255.0 );
+  Canny(channels[1],channels[1], 250.0,255.0 );
+  Canny(channels[2],channels[2], 250.0,255.0 );
+
+ 
+  namedWindow( "ch_b", WINDOW_NORMAL );
+  imshow( "ch_b", channels[0] );
+
+  waitKey(1000);
+
+namedWindow( "ch_g", WINDOW_NORMAL );
+  imshow( "ch_g", channels[1] );
+
+  waitKey(1000);
+namedWindow( "ch_r", WINDOW_NORMAL );
+  imshow( "ch_r", channels[2] );
+
+  waitKey(1000);
+
+
+ /* vector<Vec3f> circles;
 
   /// Apply the Hough Transform to find the circles
   //HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 100, 0, 0 );
@@ -117,13 +131,13 @@ line(src,indi[2],indi[0],Scalar( 0, 0, 0 ),2,8 );
 t = ((double)getTickCount() - t)/getTickFrequency();
 cout << "Times passed in seconds: " << t << endl;
 cout << "orientation" << theta_degree << endl;
-
+*/
   /// Show your results
   namedWindow( "Hough Circle Transform Demo", WINDOW_NORMAL );
   imshow( "Hough Circle Transform Demo", src );
 
   waitKey(0);
 
-}
+
   return 0;
 }
